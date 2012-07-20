@@ -11,6 +11,8 @@ class MessagesWidget extends CWidget{
         
         foreach($messages as $message){
             $this->widget('MessageWidget', array('message' => $message));
+            if($message->params->exclusive)
+                break;
         }
     }
 }

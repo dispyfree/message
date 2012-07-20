@@ -29,6 +29,10 @@ class ExtMessage extends CActiveRecord
            // (This doesn't disable closAble)
           'modal'               => false,
             
+          //If the message is exclusive, it will prevent succeeding messages from being shown
+          //on the same request
+          'exclusive'           => true,
+            
           //The title of the message, will be ignored if 'useHeading' 
           // in ExtMessageWidget is disabled
           'title'               => '',

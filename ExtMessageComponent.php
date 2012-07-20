@@ -65,7 +65,7 @@ class ExtMessageComponent extends CApplicationComponent{
         //Create Trigger itself
         $trigger = new ExtTrigger();
         $trigger->message_id = $message->id;
-        $trigger->setAttributes($options);
+        $trigger->setAttributes($options, false);
         
         //Set the user or the session this trigger is assigned to
         if(!Yii::app()->user->isGuest){
