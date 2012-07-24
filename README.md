@@ -107,30 +107,40 @@ Example:
 [php]
 
 //This shows only users of group X the message, if they haven't already seen it
-//For this purpose, we'll use Business-Rules
+//For this purpose, we'll create an aco group for each user and assign the message
+// to this group if he has already seen it. If we select messages, we neglect the
+//ones which are in the group already
+
 //This script assumes that you have given only that group permission to view this
 //trigger. That can be done easily using something like that:
 $group = CGroup::model()->find('alias = :alias', array(':alias' => 'Allowed'));
 $group->grant('view', $myTrigger);
 
-//Now, the rule itself
-class BusinessRules{
-...
-public static function isAllowed($aro, $aco, $action){
-    $restr = 'hasAlreadySeen';
-    //Checks whether he hasn't seen it yet
-    if(!$aro->is($restr)){
-        $aro->join($restr);
-        return true;
+//Second step: modify the ExtMessageComponent: directly for the findAll,
+//place something like:
+$userId = Yii::app()->user->id;
+$group  = 'already_seen_'.$userId;
+Util::addGroupRestriction('triggers', array('not', $group));
+
+
+//Now, you'll want to modify the message and add something like this:
+class ExtMessage{
+    
+    public function afterFind(){
+        parent::afterFind();
+        
+        //Now, let the message join the group
+        $userId = Yii::app()->user->id;
+        $group  = 'already_seen_'.$userId;
+        $this->join($group);
     }
-
-    return false;
-}
-
-
+    
 }
 
 ~~~
+
+You could enhance this if you only join the group if a certain parameter has been set 
+in the message parameters.
 
 
 

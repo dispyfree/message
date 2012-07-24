@@ -121,7 +121,9 @@ class ExtMessageComponent extends CApplicationComponent{
      * @return string   the unique session-identifier
      */
     protected function getSessionIdentifier(){
-        return $_COOKIE['PHPSESSID'];
+        //If there's no such cookie, the user cannot be identified and therefore
+        //cannot get _any_ messages
+        return @$_COOKIE['PHPSESSID'];
     }
 }
 ?>

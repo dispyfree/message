@@ -63,7 +63,7 @@ class MessageWidget extends CWidget{
             echo CHtml::closeTag('div');
             echo CHtml::closeTag('div');
             $options = json_encode($this->modalOptions);
-            echo CHtml::script("$('#".$this->modalId."').modal(".$options.");");
+            echo CHtml::script("$(function(){ $('#".$this->modalId."').modal(".$options.");});");
         }
             
     }
@@ -125,7 +125,7 @@ class MessageWidget extends CWidget{
         //Depending on whether or not the modal mode is used we must close 
         //different parents
         $close = !$this->message->params->modal ? 
-                 '$(this).closest("div.modal").hide();'
+                 '$(this).closest("div.alert").hide();'
                   :'$("#'.$this->modalId.'").modal("toggle");';
             
             echo CHtml::tag('a', array(
